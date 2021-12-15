@@ -1,0 +1,39 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: sans-serif;
+}
+
+.section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 75vh;
+}
+
+.section.full {
+    height: 100vh;
+}
+
+.section.sticky {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+}
+
+.bg-white {
+    background-color: #fff;
+    color: #000;
+}
+
+.bg-blue {
+    background-color: #1e53c6;
+    color: #fff;
+}
+
+.flex-column {
+    flex-direction: column;
+}
