@@ -24,13 +24,13 @@ body {
     top: 0;
 }
 
-.bg-white {
-    background-color: #fff;
-    color: #000;
+.bg-purple {
+    background-color: #594FE0;
+    color: #fff;
 }
 
 .bg-blue {
-    background-color: #1e53c6;
+    background-color: #0055B8;
     color: #fff;
 }
 
