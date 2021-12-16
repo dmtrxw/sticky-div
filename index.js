@@ -1,45 +1,42 @@
-window.addEventListener('scroll', () => {
-    const trigger1 = document.querySelector('#trigger-1')
-    const trigger1Rect = trigger1.getBoundingClientRect()
+const NUM_OF_TRIGGERS = 3
 
-    const trigger2 = document.querySelector('#trigger-2')
-    const trigger2Rect = trigger2.getBoundingClientRect()
+function getTriggerRect(num) {
+    return document.querySelector('#trigger-' + num).getBoundingClientRect()
+}
 
-    const trigger3 = document.querySelector('#trigger-3')
-    const trigger3Rect = trigger3.getBoundingClientRect()
+function getViewportHeight() {
+    return window.innerHeight
+}
 
-    if (trigger1Rect.top < window.innerHeight) {
-        const progress =
-            ((window.innerHeight - trigger1Rect.top) / window.innerHeight) * 100
-        console.log('progress', progress)
+function updateSlideProgress(slideNumber) {
+    const viewportHeight = getViewportHeight()
+    const triggerRect = getTriggerRect(slideNumber)
+    const currentTop = triggerRect.top
+    const progress = ((window.innerHeight - currentTop) / viewportHeight) * 100
 
-        document.querySelector('#current-slide').innerHTML = '1'
-        document.querySelector('#progress').innerHTML = `${progress}%`
+    if (slideNumber === NUM_OF_TRIGGERS && progress >= 100) {
+        forceSlideProgress(slideNumber, 100)
     } else {
-        document.querySelector('#current-slide').innerHTML = '1'
-        document.querySelector('#progress').innerHTML = `0%`
-    }
-
-    if (trigger2Rect.top < window.innerHeight) {
-        const progress =
-            ((window.innerHeight - trigger2Rect.top) / window.innerHeight) * 100
-        console.log('progress', progress)
-
-        document.querySelector('#current-slide').innerHTML = '2'
+        document.querySelector('#current-slide').innerHTML = slideNumber
         document.querySelector('#progress').innerHTML = `${progress}%`
     }
+}
 
-    if (trigger3Rect.top < window.innerHeight) {
-        const progress =
-            ((window.innerHeight - trigger3Rect.top) / window.innerHeight) * 100
-        console.log('progress', progress)
+function forceSlideProgress(slideNumber, progress) {
+    document.querySelector('#current-slide').innerHTML = slideNumber
+    document.querySelector('#progress').innerHTML = `${progress}%`
+}
 
-        if (progress >= 100) {
-            document.querySelector('#current-slide').innerHTML = '3'
-            document.querySelector('#progress').innerHTML = `100%`
-        } else {
-            document.querySelector('#current-slide').innerHTML = '3'
-            document.querySelector('#progress').innerHTML = `${progress}%`
+window.addEventListener('scroll', () => {
+    const viewportHeight = getViewportHeight()
+
+    for (let i = 1; i <= NUM_OF_TRIGGERS; i++) {
+        const triggerRect = getTriggerRect(i)
+
+        if (triggerRect.top < viewportHeight) {
+            updateSlideProgress(i)
+        } else if (i === 1) {
+            forceSlideProgress(i, 0)
         }
     }
 })
