@@ -1,4 +1,4 @@
-const NUM_OF_TRIGGERS = 3
+const NUM_OF_TRIGGERS = 4
 
 function getTriggerRect(num) {
     return document.querySelector('#trigger-' + num).getBoundingClientRect()
@@ -15,19 +15,19 @@ function updateSlideProgress(slideNumber) {
     const progress = ((window.innerHeight - currentTop) / viewportHeight) * 100
 
     if (slideNumber === NUM_OF_TRIGGERS && progress >= 100) {
-        forceSlideProgress(slideNumber, 100)
+        printSlideNumberAndProgress(slideNumber, 100)
     } else {
-        document.querySelector('#current-slide').innerHTML = slideNumber
-        document.querySelector('#progress').innerHTML = `${progress}%`
+        printSlideNumberAndProgress(slideNumber, progress)
     }
 }
 
-function forceSlideProgress(slideNumber, progress) {
+function printSlideNumberAndProgress(n, progress) {
+    const slideNumber = n === NUM_OF_TRIGGERS ? NUM_OF_TRIGGERS - 1 : n
     document.querySelector('#current-slide').innerHTML = slideNumber
     document.querySelector('#progress').innerHTML = `${progress}%`
 }
 
-window.addEventListener('scroll', () => {
+function stickyContainerProgress() {
     const viewportHeight = getViewportHeight()
 
     for (let i = 1; i <= NUM_OF_TRIGGERS; i++) {
@@ -36,7 +36,25 @@ window.addEventListener('scroll', () => {
         if (triggerRect.top < viewportHeight) {
             updateSlideProgress(i)
         } else if (i === 1) {
-            forceSlideProgress(i, 0)
+            printSlideNumberAndProgress(i, 0)
         }
     }
+}
+
+function parallaxOverStickyContainer() {
+    const lastTriggerElement = document.querySelector(
+        '#trigger-' + (NUM_OF_TRIGGERS - 1)
+    )
+    const lastTriggerRect = lastTriggerElement.getBoundingClientRect()
+
+    if (lastTriggerRect.top < 0) {
+        document.querySelector('#sticky-section').classList.add('latched')
+    } else {
+        document.querySelector('#sticky-section').classList.remove('latched')
+    }
+}
+
+window.addEventListener('scroll', () => {
+    stickyContainerProgress()
+    parallaxOverStickyContainer()
 })
